@@ -57,19 +57,20 @@ artifacts {
 }
 
 publishing {
-    //repositories {
-    //    maven {
-    //        url = 'https://oss.sonatype.org/content/repositories/snapshots'
-    //        credentials {
-    //            username = sonatypeUsername
-    //            password = sonatypePassword
-    //        }
-    //    }
-    //}
+    repositories {
+        maven {
+            url = 'https://maven.nostal.ink/repository/maven-snapshots/'
+            credentials {
+
+                username = System.getenv("REPO_USER")
+                password = System.getenv("REPO_PASSWORD")
+            }
+        }
+    }
     publications {
         shadow(MavenPublication) { publication ->
             project.shadow.component(publication)
-            version = "${project.pluginVersion}-SNAPSHOT"
+            version = "${project.baseVersion}-${project.buildCommit}"
         }
     }
 }

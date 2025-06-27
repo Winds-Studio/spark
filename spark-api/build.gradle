@@ -2,7 +2,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = '0.1-SNAPSHOT'
+version = "0.1-${project.buildCommit}"
 
 dependencies {
     compileOnly 'org.checkerframework:checker-qual:3.44.0'
@@ -14,15 +14,16 @@ license {
 }
 
 publishing {
-    //repositories {
-    //    maven {
-    //        url = 'https://oss.sonatype.org/content/repositories/snapshots'
-    //        credentials {
-    //            username = sonatypeUsername
-    //            password = sonatypePassword
-    //        }
-    //    }
-    //}
+    repositories {
+        maven {
+            url = 'https://maven.nostal.ink/repository/maven-snapshots/'
+            credentials {
+
+                username = System.getenv("REPO_USER")
+                password = System.getenv("REPO_PASSWORD")
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             from components.java
