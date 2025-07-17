@@ -16,7 +16,7 @@ license {
 publishing {
     repositories {
         maven {
-            url = 'https://maven.nostal.ink/repository/maven-snapshots/'
+            url = 'https://maven.leafmc.one/snapshots/'
             credentials {
 
                 username = System.getenv("REPO_USER")
