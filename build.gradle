@@ -1,7 +1,7 @@
 plugins {
-    id 'org.cadixdev.licenser' version '0.6.1' apply false
+    id 'dev.yumi.gradle.licenser' version '2.2.2' apply false
     id 'com.gradleup.shadow' version '8.3.8' apply false
-    id 'fabric-loom' version '1.13-SNAPSHOT' apply false
+    id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT' apply false
 }
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
@@ -16,12 +16,12 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'java-library'
-    apply plugin: 'org.cadixdev.licenser'
+    apply plugin: 'dev.yumi.gradle.licenser'
 
     ext {
         baseVersion = '1.10'
         patchVersion = ''
-        buildCommit = 'dev-a0692cc-SNAPSHOT'
+        buildCommit = 'dev-f181ccf-SNAPSHOT'
         pluginVersion = baseVersion + '.' + patchVersion
         pluginDescription = 'spark is a performance profiling plugin/mod for Minecraft clients, servers and proxies.'
 
@@ -61,8 +61,7 @@ subprojects {
     }
 
     license {
-        header = rootProject.file('HEADER.txt')
-        include '**/*.java'
+        rule(rootProject.file("HEADER.txt"))
     }
 
     repositories {
@@ -83,12 +82,9 @@ subprojects {
 }
 
 def determinePatchVersion() {
-    def tagInfo = new ByteArrayOutputStream()
-    exec {
+    def tagInfo = providers.exec {
         commandLine 'git', 'describe', '--tags'
-        standardOutput = tagInfo
-    }
-    tagInfo = tagInfo.toString()
+    }.standardOutput.asText.get().trim()
 
-    return tagInfo.contains('-') ? tagInfo.split("-")[1] : 0
+    return tagInfo.contains('-') ? tagInfo.split('-')[1] : 0
 }
